@@ -5,7 +5,7 @@ const port = process.env.PORT || 3000;
 const path = require('path');
 const { uuid } = require('uuidv4');
 const methodOverride = require('method-override');
-const dbUrl = process.env.DB_URL;
+const dbUrl = "mongodb+srv://our-first-user:q3tWJ5lFNIAEhLZN@cluster0.2h6tywl.mongodb.net/?retryWrites=true&w=majority";
 const Post = require('./models/postsData');
 //const postsData = require('./seeds');
 
@@ -17,7 +17,7 @@ const Post = require('./models/postsData');
 
 // Connect to your MongoDB database
 //local --> mongodb://127.0.0.1:27017/p-blog
-mongoose.connect(`${dbUrl}`, {
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
