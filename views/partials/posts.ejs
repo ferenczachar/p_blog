@@ -1,0 +1,16 @@
+<div id="posts-container">
+    <ul id="posts">
+        <% for (p of postsData) {%>
+            <li class="post">
+                <h3><%= p.title %></h3> <span>#<%= p._id %></span>
+                <div class="date"><%= p.date %></div>
+                <p><%= p.desc.slice(0, 150) %>...</p>
+                <a href="/posts/<%= p._id %>"><button id="goToPost">Read More</button></a>
+                <div class="otherActions">
+                    <a href="/posts/<%= p._id %>/edit" alt="edit"><i class="bi bi-pencil-square"></i></a>
+                    <a href="/posts/<%= p._id %>/delete" alt="delete"><i class="bi bi-trash-fill"></i></a>
+                </div>
+            </li>
+        <% } %>
+    </ul>
+</div>

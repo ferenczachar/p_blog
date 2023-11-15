@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-Blog Sign-Up</title>
+    <link rel="stylesheet" href="/register.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Hi!</h1>
+        <h3>Please fill out the below form to register</h2>
+        <form method="POST" action="/users/new">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+            <label for="password2">Repeat Password</label>
+            <input type="password" name="password2" id="password2">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+            <button id="register">Register</button>
+        </form>
+        <div class="errors">
+            Some kind of error message :(
+        </div>
+        <div class="others">
+            <a href="/"><button id="cancel">Cancel</button></a>
+            <a href="/login"><button id="login">I already have an account</button></a>
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+</body>
+</html>

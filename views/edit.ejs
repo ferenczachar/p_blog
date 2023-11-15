@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-Blog - Edit Post</title>
+    <link rel="stylesheet" href="/new.css">
+</head>
+<body>
+    <h1>Edit Post</h1>
+    <div id="container">
+        <form method="post" action="/posts/<%= post.id %>?_method=PATCH">
+            <label for="title">Enter Title</label>
+            <input type="text" name="title" id="title" value="<%= post.title %>">
+            <label for="desc">Enter Description</label>
+            <textarea id="desc" name="desc" cols="50" rows="10"><%= post.desc %></textarea>
+
+            <button id="submitBtn">Save</button>
+        </form>
+        <a href="/"><button id="cancelBtn" class="cancel">Cancel</button></a>
+    </div>
+</body>
+</html>

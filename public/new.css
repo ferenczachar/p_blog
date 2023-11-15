@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+:root {
+    /* --main-color: #23232; */
+    --levander: #dae4fc;
+    --levander-light: #e7e6f7;
+    --mount: #827081;
+    --rose: #aea3b0;
+    --pale-p: #e3d0d8;
+}
+* {
+    font-family: 'Montserrat', sans-serif;
+    list-style: none;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--rose);
+}
+h1 {
+    margin-bottom: 45px;
+    color: var(--levander-light);
+}
+#container {
+    display: flex;
+    flex-direction: column;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+form label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--levander-light);
+}
+form input, textarea {
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+}
+form button, .cancel {
+    border-radius: 15px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--mount);
+    background-color: var(--levander-light);
+    padding: 5px;
+    cursor: pointer;
+    width: 400px;
+    align-self: center;
+}
+form button:hover, .cancel:hover {
+    background-color: var(--mount);
+    color: var(--levander-light);
+}
+#container a {
+    align-self: center;
+}
+.cancel {
+    margin-top: 5px;
+    align-self: center;
+}
+
+.cancel:hover {
+    background-color: rgb(255, 80, 80);
+}
+#showPost {
+    background-color: var(--levander-light);
+    width: 50vw;
+    margin-bottom: 25px;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+#showPost h1 {
+    color: var(--mount);
+    text-align: center;
+}
+#showPost p i {
+    font-size: 12px;
+}
+#deleteBtn:hover {
+    background-color: rgb(255, 80, 80);
+    color: white;
+}
+#cancelDelBtn:hover {
+    background-color: var(--mount);
+    color: var(--levander-light);
+}
