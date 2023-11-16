@@ -1,23 +1,22 @@
 const express = require('express');
 const app = express();
+require('dotenv').config()
 const mongoose = require('mongoose');
 const port = process.env.PORT || 3000;
 const path = require('path');
 const { uuid } = require('uuidv4');
 const methodOverride = require('method-override');
-const dbUrl = "mongodb+srv://our-first-user:q3tWJ5lFNIAEhLZN@cluster0.2h6tywl.mongodb.net/?retryWrites=true&w=majority";
+const dbUrl = process.env.KEY;
+const localUrl = "mongodb://127.0.0.1:27017/p-blog";
 const Post = require('./models/postsData');
 //const postsData = require('./seeds');
-
-//DB_URL=mongodb+srv://our-first-user:q3tWJ5lFNIAEhLZN@cluster0.2h6tywl.mongodb.net/?retryWrites=true&w=majority
 
 //atlas-user
 //our-first-user
 //q3tWJ5lFNIAEhLZN
 
 // Connect to your MongoDB database
-//local --> mongodb://127.0.0.1:27017/p-blog
-mongoose.connect(dbUrl, {
+mongoose.connect(`${dbUrl}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -74,12 +73,22 @@ app.get('/posts/:id/delete', async (req, res) => {
     res.render('delete', { post });
 });
 
+app.get('/users', async (req, res) => {
+    res.send('here are your users');
+});
+
 //POST Requests
 app.post('/', async (req, res) => {
     const newPost = new Post(req.body);
     await newPost.save();
     console.log(newPost);
     res.redirect('/');
+});
+
+app.post('/users', async (req, res) => {
+    const newUser = req.body;
+    console.log(newUser);
+    res.send(newUser);
 });
 
 //PATCH

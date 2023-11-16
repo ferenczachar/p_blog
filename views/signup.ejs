@@ -10,7 +10,7 @@
     <div class="container">
         <h1>Hi!</h1>
         <h3>Please fill out the below form to register</h2>
-        <form method="POST" action="/users/new">
+        <form method="POST" action="/users">
             <label for="username">Username</label>
             <input type="text" name="username" id="username">
             <label for="password">Password</label>
@@ -22,16 +22,12 @@
             <button id="register">Register</button>
         </form>
         <div class="errors">
-            Some kind of error message :(
         </div>
         <div class="others">
             <a href="/"><button id="cancel">Cancel</button></a>
             <a href="/login"><button id="login">I already have an account</button></a>
         </div>
     </div>
-
-    <script>
-
-    </script>
+    <script src="/users.js"></script>
 </body>
 </html>
