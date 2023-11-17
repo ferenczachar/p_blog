@@ -7,16 +7,16 @@ const path = require('path');
 const { uuid } = require('uuidv4');
 const methodOverride = require('method-override');
 const dbUrl = process.env.KEY;
-const localUrl = "mongodb://127.0.0.1:27017/p-blog";
+const localUrl = 'mongodb://127.0.0.1:27017/p-blog';
 const Post = require('./models/postsData');
+const User = require('./models/newUser');
+const bcrypt = require('bcrypt');
 //const postsData = require('./seeds');
 
-//atlas-user
-//our-first-user
-//q3tWJ5lFNIAEhLZN
-
 // Connect to your MongoDB database
-mongoose.connect(`${dbUrl}`, {
+//`${dbUrl}` - online
+//localUrl - local
+mongoose.connect(localUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -85,10 +85,50 @@ app.post('/', async (req, res) => {
     res.redirect('/');
 });
 
-app.post('/users', async (req, res) => {
-    const newUser = req.body;
-    console.log(newUser);
-    res.send(newUser);
+app.post('/signup', async (req, res) => {
+    const newUser = new User(req.body);
+    const existingUser = await User.findOne({ username: newUser.username });
+
+    newUser.password = await bcrypt.hash(newUser.password, 10) //hashing user pw - not visible in DB
+    .catch(err => {
+        console.error("Error hashing password:", err);
+        res.status(500).send("Error creating user.");
+    });
+    
+    if (existingUser) {
+        res.send('User already exists.'); //Needs a seperate EJS page
+    } else {
+
+        await newUser.save()
+        .then(() => {
+            res.send(`Hi ${newUser.username}, Your account has been created successfully!`);
+        })
+        .catch((err) => {
+            console.log(err)
+            res.send(err)
+        })
+    }
+});
+
+app.post('/login', async (req, res) => {
+    const loginName = req.body.username;
+    const loginPassword = req.body.password;
+    
+    const findUser = await User.findOne({ username: loginName }) //finding user in DB
+        .catch((err) => {
+            console.log(err);
+        });
+
+    if (findUser !== null) {
+        const passwordMatch = await bcrypt.compare(loginPassword, findUser.password); //check if pw entered by user is same as in DB
+        if (passwordMatch) {
+            res.send('Logged in successfully');
+        } else {
+            console.log('Invalid password')
+        }
+    } else {
+        console.log('Invalid username')
+    }
 });
 
 //PATCH

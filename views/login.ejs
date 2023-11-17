@@ -3,10 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P-Blog Sign-Up</title>
+    <title>P-Blog Login</title>
     <link rel="stylesheet" href="/register.css">
 </head>
 <body>
-    
+    <div id="container">
+        <h1>Welcome,</h1>
+        <h3>Please log in with your credentials</h3>
+        <form action="/login" method="post">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+
+            <button id="submit">Login</button>
+        </form>
+        <div id="error">Error message</div>
+        <a href="/signup">I don't have an account</a>
+        <a href="/">Cancel</a>
+    </div>
+
+    <script src="/login.js"></script>
 </body>
 </html>

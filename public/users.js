@@ -19,14 +19,14 @@ form.addEventListener('submit', (e) => {
         } else if (inputs[1].value !== inputs[2].value) {
             e.preventDefault();
             error.innerHTML = "Passwords do not match";
-        } 
+        }
         else {
             return;
         }
     });
 });
 
-//1. Needs a Mongoose Schema + Model Setup,
-//2. Needs a database collection,
-//3. Users with duplicate username/email cannot be created
+//1. Needs a Mongoose Schema + Model Setup, - done
+//2. Needs a database collection, - done
+//3. Users with duplicate username cannot be created - done
 //4. Passwords need to be hashed.

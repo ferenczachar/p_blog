@@ -1,3 +1,4 @@
 node_modules
 seeds.js
 .env
+credentials.txt
