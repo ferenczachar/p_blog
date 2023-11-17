@@ -16,7 +16,7 @@ const bcrypt = require('bcrypt');
 // Connect to your MongoDB database
 //`${dbUrl}` - online
 //localUrl - local
-mongoose.connect(localUrl, {
+mongoose.connect(`${dbUrl}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
