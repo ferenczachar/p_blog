@@ -17,7 +17,7 @@ const session = require('express-session');
 // Connect to your MongoDB database
 //`${dbUrl}` - online
 //localUrl - local
-mongoose.connect(dbUrl, {
+mongoose.connect(localUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -48,7 +48,19 @@ const requireLogin = (req, res, next) => {
 
 //GET Requests
 app.get('/', async (req, res) => { //home
-    const postsData = await Post.find({}).sort({"date":-1}) //Legfrissebb dátummal kezdődik a felsorolás!
+    //const postsData = await Post.find({}).sort({"date":-1}) //Legfrissebb dátummal kezdődik a felsorolás!
+    let postsData;
+    
+    // Check if a search query is provided
+    if (req.query.search) {
+        // Use a regular expression to perform case-insensitive search
+        const regex = new RegExp(req.query.search, 'i');
+        postsData = await Post.find({ title: regex }).sort({ "_id": 1 });
+    } else {
+        // If no search query, retrieve all posts
+        postsData = await Post.find({}).sort({ "_id": -1 });
+    }
+
     const thisUser = req.session.username;
     res.render('home', { postsData, thisUser });
 });
@@ -153,7 +165,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/logout', requireLogin, (req, res) => {
     req.session.destroy();
-    res.redirect('/login');
+    res.redirect('/');
 });
 
 //PATCH
