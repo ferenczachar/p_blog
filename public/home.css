@@ -32,7 +32,7 @@ header {
     justify-content: right;
     align-items: center;
 }
-header a {
+header a, header button {
     color: white;
     text-decoration: none;
     margin: 0 5px;
@@ -40,10 +40,16 @@ header a {
     padding: 5px 10px;
     border-radius: 5px;
 }
-header a:hover {
+header a:hover, header button:hover {
     color: var(--mount);
     background-color: white;
     transition: 200ms ease-in-out;
+}
+
+header button {
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 #content {

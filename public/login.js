@@ -1,3 +1,4 @@
+const h1 = document.querySelector('h1');
 const form = document.querySelector('form');
 const inputs = document.querySelectorAll('input');
 let username = document.querySelector('#username');

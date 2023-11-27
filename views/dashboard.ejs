@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-Blog | Dashboard</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <h1>Hi, <%= thisUser %>!</h1>
+    <h3>Welcome to your dashboard</h3>
+
+    <a href="/"><button>Home</button></a>
+    <a href="/posts/new"><button>Create Post</button></a>
+    <form action="/logout" method="POST">
+        <button>Logout</button>
+    </form>
+</body>
+</html>

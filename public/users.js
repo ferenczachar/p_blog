@@ -26,6 +26,10 @@ form.addEventListener('submit', (e) => {
     });
 });
 
+if (errorMsg) {
+    error.innerHTML = errorMsg;
+}
+
 //1. Needs a Mongoose Schema + Model Setup, - done
 //2. Needs a database collection, - done
 //3. Users with duplicate username cannot be created - done

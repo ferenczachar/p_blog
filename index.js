@@ -6,17 +6,18 @@ const port = process.env.PORT || 3000;
 const path = require('path');
 const { uuid } = require('uuidv4');
 const methodOverride = require('method-override');
-const dbUrl = process.env.KEY;
+const dbUrl = `${process.env.KEY}`;
 const localUrl = 'mongodb://127.0.0.1:27017/p-blog';
 const Post = require('./models/postsData');
 const User = require('./models/newUser');
 const bcrypt = require('bcrypt');
+const session = require('express-session');
 //const postsData = require('./seeds');
 
 // Connect to your MongoDB database
 //`${dbUrl}` - online
 //localUrl - local
-mongoose.connect(`${dbUrl}`, {
+mongoose.connect(localUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -33,13 +34,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
 app.use(methodOverride('_method'))
+app.use(session({secret: 'notagoodsecret'}));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
+
+//Middlewares
+const requireLogin = (req, res, next) => {
+    if(!req.session.user_id) {
+        return res.redirect('/login');
+    }
+    next();
+};
 
 //GET Requests
 app.get('/', async (req, res) => { //home
     const postsData = await Post.find({}).sort({"date":-1}) //Legfrissebb dátummal kezdődik a felsorolás!
-    res.render('home', { postsData });
+    const thisUser = req.session.username;
+    res.render('home', { postsData, thisUser });
 });
 
 app.get('/signup', (req, res) => {
@@ -51,7 +62,7 @@ app.get('/login', (req, res) => {
 });
 
 
-app.get('/posts/new', (req, res) => {
+app.get('/posts/new', requireLogin, (req, res) => {
     res.render('new');
 });
 
@@ -61,13 +72,13 @@ app.get('/posts/:id', async (req, res) => { //post-show
     res.render('show', { post });
 });
 
-app.get('/posts/:id/edit', async (req, res) => {
+app.get('/posts/:id/edit', requireLogin, async (req, res) => {
     const { id } = req.params;
     const post = await Post.findById(id);
     res.render('edit', { post });
 });
 
-app.get('/posts/:id/delete', async (req, res) => {
+app.get('/posts/:id/delete', requireLogin, async (req, res) => {
     const { id } = req.params;
     const post = await Post.findById(id);
     res.render('delete', { post });
@@ -77,8 +88,13 @@ app.get('/users', async (req, res) => {
     res.send('here are your users');
 });
 
+app.get('/dashboard', requireLogin, (req, res) => {
+    const thisUser = req.session.username;
+    res.render('dashboard', { thisUser });
+});
+
 //POST Requests
-app.post('/', async (req, res) => {
+app.post('/', requireLogin, async (req, res) => {
     const newPost = new Post(req.body);
     await newPost.save();
     console.log(newPost);
@@ -101,7 +117,7 @@ app.post('/signup', async (req, res) => {
 
         await newUser.save()
         .then(() => {
-            res.send(`Hi ${newUser.username}, Your account has been created successfully!`);
+            res.redirect('/login');
         })
         .catch((err) => {
             console.log(err)
@@ -122,17 +138,26 @@ app.post('/login', async (req, res) => {
     if (findUser !== null) {
         const passwordMatch = await bcrypt.compare(loginPassword, findUser.password); //check if pw entered by user is same as in DB
         if (passwordMatch) {
-            res.send('Logged in successfully');
+            req.session.user_id = findUser._id;
+            req.session.username = findUser.username;
+            res.redirect('/dashboard');
         } else {
             console.log('Invalid password')
+            res.redirect('/login');
         }
     } else {
         console.log('Invalid username')
+        res.redirect('/login');
     }
 });
 
+app.post('/logout', requireLogin, (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
+});
+
 //PATCH
-app.patch('/posts/:id', async (req, res) => {
+app.patch('/posts/:id', requireLogin, async (req, res) => {
     const { id } = req.params;
     const foundPost = await Post.findByIdAndUpdate(id, req.body, { runValidators: true })
     console.log(foundPost);
@@ -140,7 +165,7 @@ app.patch('/posts/:id', async (req, res) => {
 });
 
 //DELETE
-app.delete('/posts/:id', async (req, res) => {
+app.delete('/posts/:id', requireLogin, async (req, res) => {
     const { id } = req.params;
     const foundPost = await Post.findByIdAndDelete(id)
     res.redirect('/');
